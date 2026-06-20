@@ -1,0 +1,43 @@
+---
+import SanityVisualEditing from "../components/SanityVisualEditing";
+import DisableDraftMode from "../components/DisableDraftMode";
+import { perspectiveCookieName } from "@sanity/preview-url-secret/constants";
+
+const draftMode = Astro.cookies.has(perspectiveCookieName);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Youth Wellbeing</title>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background-color: #fafafa;
+        color: #1a1a1a;
+        text-align: center;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <slot />
+    {
+      draftMode && (
+        <>
+          <SanityVisualEditing client:only="react" />
+          <DisableDraftMode client:only="react" />
+        </>
+      )
+    }
+  </body>
+</html>

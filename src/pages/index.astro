@@ -2,31 +2,37 @@
 import { TEST_MESSAGE_QUERY } from "../sanity/lib/queries";
 import { loadQuery } from "../sanity/lib/load-query";
 import { getDraftModeProps } from "../sanity/lib/draft-mode";
+import Layout from "../layouts/Layout.astro";
 
 const { data: testMessage } = await loadQuery<{
   _id: string;
-  text: string;
+  heading: string;
+  subtitle: string;
 } | null>({
   query: TEST_MESSAGE_QUERY,
   ...getDraftModeProps(Astro.cookies),
 });
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Youth Wellbeing — Hello World</title>
-  </head>
-  <body>
-    <h1>Hello from Sanity</h1>
-    {
-      testMessage ? (
-        <p>{testMessage.text}</p>
-      ) : (
-        <p>No test message found, check the document is published in Studio.</p>
-      )
-    }
-  </body>
-</html>
+<Layout>
+  <h1>{testMessage?.heading}</h1>
+  {
+    testMessage ? (
+      <p>{testMessage.subtitle}</p>
+    ) : (
+      <p>No test message found, check the document is published in Studio.</p>
+    )
+  }
+</Layout>
+
+<style>
+  h1 {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.5rem;
+    line-height: 1.5;
+  }
+</style>
