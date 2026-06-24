@@ -1,0 +1,200 @@
+/* =============================================================================
+   UTILITIES.CSS
+   13foot3 CSS framework — single-purpose utility classes.
+
+   All utilities are in @layer utilities, which sits above composition but
+   below blocks in the cascade. This means block-level CSS can override
+   utilities when needed without !important.
+
+   Naming convention: .u-[property]-[value]
+   All values reference tokens from variables.css or global.css.
+   ============================================================================= */
+
+@layer utilities {
+  /* ---------------------------------------------------------------------------
+     ACCESSIBILITY
+     --------------------------------------------------------------------------- */
+
+  /* Visually hidden — removes from view but keeps accessible to screen readers */
+  .u-visually-hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  /* Skip link — jumps keyboard users past nav to main content.
+     Place as the very first element in <body>:
+     <a href="#main-content" class="u-skip-link">Skip to content</a> */
+  .u-skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-s);
+    z-index: 999;
+    padding: var(--space-xs) var(--space-s);
+    background-color: var(--color-brand);
+    color: var(--color-text-inverse);
+    font-weight: var(--font-weight-bold);
+    text-decoration: none;
+    border-radius: var(--radius);
+  }
+
+  .u-skip-link:focus-visible {
+    top: var(--space-s);
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY — Size
+     --------------------------------------------------------------------------- */
+
+  .u-text-small {
+    font-size: var(--step--1);
+  }
+
+  .u-text-large {
+    font-size: var(--step-1);
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY — Weight
+     --------------------------------------------------------------------------- */
+
+  .u-font-regular {
+    font-weight: var(--font-weight-regular);
+  }
+
+  .u-font-medium {
+    font-weight: var(--font-weight-medium);
+  }
+
+  .u-font-bold {
+    font-weight: var(--font-weight-bold);
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY — Alignment
+     --------------------------------------------------------------------------- */
+
+  .u-text-left {
+    text-align: left;
+  }
+
+  .u-text-centre {
+    text-align: center;
+  }
+
+  .u-text-right {
+    text-align: right;
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY — Colour
+     --------------------------------------------------------------------------- */
+
+  .u-text-brand {
+    color: var(--color-brand);
+  }
+
+  .u-text-inverse {
+    color: var(--color-text-inverse);
+  }
+
+  .u-text-heading {
+    color: var(--color-text-heading);
+  }
+
+  .u-text-body {
+    color: var(--color-text);
+  }
+
+  /* ---------------------------------------------------------------------------
+     TYPOGRAPHY — Line height
+     --------------------------------------------------------------------------- */
+
+  .u-leading-tight {
+    line-height: var(--leading-tight);
+  }
+
+  .u-leading-normal {
+    line-height: var(--leading-normal);
+  }
+
+  /* ---------------------------------------------------------------------------
+     LAYOUT
+     --------------------------------------------------------------------------- */
+
+  /* Constrain text to a readable line length */
+  .u-prose {
+    max-width: 65ch;
+  }
+
+  /* Centre a block element horizontally */
+  .u-centre {
+    margin-inline: auto;
+  }
+
+  /* Display */
+  .u-display-none {
+    display: none;
+  }
+
+  .u-display-flex {
+    display: flex;
+  }
+
+  /* Prevent flex children (icons, logos) from shrinking */
+  .u-flex-shrink-0 {
+    flex-shrink: 0;
+  }
+
+  /* ---------------------------------------------------------------------------
+     MEDIA
+     --------------------------------------------------------------------------- */
+
+  .u-aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .u-aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* Contain rather than cover — for logos */
+  .u-object-contain {
+    object-fit: contain;
+  }
+
+  /* ---------------------------------------------------------------------------
+     ICON
+     Adapted from Lumos (Timothy Ricks — lumos.timothyricks.com).
+     Apply .u-icon to a wrapper around an <svg>.
+     The SVG inherits currentColor so it picks up whatever colour the
+     parent element has set.
+
+     Usage:
+       <span class="u-icon" style="width: 1.5rem;">
+         <svg>...</svg>
+       </span>
+     --------------------------------------------------------------------------- */
+
+  .u-icon svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Stroke-based SVGs */
+  .u-icon path[stroke] {
+    stroke: currentColor;
+    stroke-width: var(--border-width);
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Fill-based SVGs */
+  .u-icon :is(path:not([stroke]), rect, circle, ellipse, polygon, polyline) {
+    fill: currentColor;
+  }
+}
