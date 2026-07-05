@@ -38,13 +38,11 @@ cd astro-sanity-starter
 npm install
 ```
 
-Add a `.env` file at the project root:
+Create a `.env` file at the project root with the following variables:
 
-```
-PUBLIC_SANITY_PROJECT_ID=your_project_id
-PUBLIC_SANITY_DATASET=production
-SANITY_API_READ_TOKEN=your_read_token
-```
+- `PUBLIC_SANITY_PROJECT_ID` — your Sanity project ID
+- `PUBLIC_SANITY_DATASET` — your dataset name (e.g. `production`)
+- `SANITY_API_READ_TOKEN` — a read token from your Sanity project API settings
 
 Then run:
 
