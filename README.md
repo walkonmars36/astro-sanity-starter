@@ -40,9 +40,11 @@ npm install
 
 Add a `.env` file at the project root:
 
+```
 PUBLIC_SANITY_PROJECT_ID=your_project_id
 PUBLIC_SANITY_DATASET=production
 SANITY_API_READ_TOKEN=your_read_token
+```
 
 Then run:
 
