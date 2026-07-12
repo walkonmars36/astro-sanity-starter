@@ -32,9 +32,9 @@
   .u-skip-link {
     position: absolute;
     top: -100%;
-    left: var(--space-s);
+    left: var(--space-3);
     z-index: 999;
-    padding: var(--space-xs) var(--space-s);
+    padding: var(--space-2) var(--space-3);
     background-color: var(--color-brand);
     color: var(--color-text-inverse);
     font-weight: var(--font-weight-bold);
@@ -43,19 +43,53 @@
   }
 
   .u-skip-link:focus-visible {
-    top: var(--space-s);
+    top: var(--space-3);
   }
 
   /* ---------------------------------------------------------------------------
      TYPOGRAPHY — Size
+     Named after Lumos' own scale — intuitive and traceable back to source.
+     Fixed values, not per-project — unlike h1–h4 in global.css (which are
+     the adjustable per-project tag defaults), these always mean the same
+     thing regardless of what any project's heading tags are doing.
      --------------------------------------------------------------------------- */
 
+  .u-text-xs {
+    font-size: var(--size-text-xs); /* 14 / 14 */
+  }
+
   .u-text-small {
-    font-size: var(--step--1);
+    font-size: var(--size-text-small); /* 16 / 14 */
   }
 
   .u-text-large {
-    font-size: var(--step-1);
+    font-size: var(--size-text-large); /* 20 / 18 */
+  }
+
+  .u-text-h5 {
+    font-size: var(--size-h5); /* 24 / 22 */
+  }
+
+  .u-text-h4 {
+    font-size: var(--size-h4); /* 32 / 28 */
+  }
+
+  .u-text-h3 {
+    font-size: var(--size-h3); /* 48 / 36 */
+  }
+
+  .u-text-h2 {
+    font-size: var(--size-h2); /* 64 / 40 — unused this project, available */
+  }
+
+  .u-text-h1 {
+    font-size: var(--size-h1); /* 80 / 48 — unused this project, available */
+  }
+
+  .u-text-display {
+    font-size: var(
+      --size-display
+    ); /* 112 / 64 — unused this project, available */
   }
 
   /* ---------------------------------------------------------------------------
@@ -126,7 +160,9 @@
      LAYOUT
      --------------------------------------------------------------------------- */
 
-  /* Constrain text to a readable line length */
+  /* Constrain text to a readable line length — p already gets this by
+     default (global.css), this is for anything else that needs it
+     (a div, a blockquote wrapper, etc.) */
   .u-prose {
     max-width: 65ch;
   }

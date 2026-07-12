@@ -2,18 +2,24 @@
    VARIABLES.CSS — [Project Name]
    Brand design tokens for the 13foot3 CSS framework.
 
-   This file is project-specific. Fill in client brand values below.
    global.css and utilities.css are framework-level and remain unchanged
-   across projects.
+   across projects — this file is the only place project-specific values
+   should live.
 
    Checklist for a new project:
      [ ] Replace raw colour values with client palette
-     [ ] Update semantic aliases if colour roles differ
+     [ ] Update semantic aliases if colour roles differ (e.g. --color-brand)
      [ ] Set font family (and add <link> to layout <head> if using Google Fonts)
-     [ ] Run Utopia type scale: utopia.fyi/type/calculator
-         Settings: min 320px, max 1440px, min scale Minor Third (1.2),
-         max scale Major Third (1.25), base 16px → 18px (adjust as needed)
-     [ ] Paste generated clamp() values into the type scale section below
+     [ ] Generate real cap-size trim values for the chosen font at
+         seek-oss.github.io/capsize
+     [ ] Reconsider --h1-size through --h4-size for this project — defaults
+         to the full Lumos scale, but may need shifting down (see comment
+         at that block)
+
+   Type and space scale below are pre-filled with the Lumos default values
+   (Timothy Ricks' Webflow framework) — this is a personal baseline, not
+   something to regenerate per project. Leave as-is unless a project
+   genuinely needs a different scale.
    ============================================================================= */
 
 /* ---------------------------------------------------------------------------
@@ -23,27 +29,32 @@
    --------------------------------------------------------------------------- */
 
 :root {
-  /* Primary brand colour — add shades as needed */
-  --color-brand-600: #000000; /* replace with client value */
-  --color-brand-400: #000000; /* replace with client value — hover/lighter */
+  /* Primary brand colour ramp — add/remove steps as needed */
+  --color-primary-300: #000000; /* Add project design tokens here */
+  --color-primary-400: #000000;
+  --color-primary-500: #000000;
+  --color-primary-600: #000000;
+  --color-primary-700: #000000;
+  --color-primary-800: #000000;
+  --color-primary-900: #000000;
 
-  /* Secondary brand colour */
-  --color-secondary-900: #000000; /* replace with client value */
-  --color-secondary-100: #000000; /* replace with client value — light tint */
-  --color-secondary-50: #000000; /* replace with client value — lightest tint */
+  /* Accent colour ramp — CTAs, highlights, secondary emphasis */
+  --color-accent-400: #000000;
+  --color-accent-500: #000000;
+  --color-accent-600: #000000;
+  --color-accent-700: #000000;
 
-  /* Neutral — body and heading text */
-  --color-neutral-dark: #000000; /* replace with client value */
-  --color-neutral: rgba(0, 0, 0, 0.85); /* replace with client value */
-  --color-neutral-heading: rgba(0, 0, 0, 0.85); /* replace with client value */
+  /* Off-ramp tokens */
+  --color-paper: #000000; /* page background */
+  --color-ink: #000000; /* body text colour */
 
-  /* White — base and opacity variants (adjust if brand uses off-white) */
+  /* White — base and opacity variants */
   --color-white: #ffffff;
   --color-white-80: rgba(255, 255, 255, 0.8);
   --color-white-60: rgba(255, 255, 255, 0.6);
   --color-white-50: rgba(255, 255, 255, 0.5);
 
-  /* Grey scale — add or remove as needed */
+  /* Grey scale — neutral UI surfaces */
   --color-grey-1: #fcfcfc;
   --color-grey-2: #e2e2e2;
   --color-grey-3: #dddddd;
@@ -52,46 +63,47 @@
 
 /* ---------------------------------------------------------------------------
    COLOUR — Semantic aliases
-   Components reference these, not the raw values above. To retheme a project,
-   update the raw palette and these aliases — no component CSS changes needed.
+   Components reference these, not the raw values above. To retheme a
+   project, update the raw palette and these aliases — no component CSS
+   changes needed. Names are deliberately generic (tint-1/tint-2, not
+   colour names) so global.css never needs project-specific language.
    --------------------------------------------------------------------------- */
 
 :root {
-  /* Brand */
-  --color-brand: var(--color-brand-600);
-  --color-brand-hover: var(--color-brand-400);
-  --color-brand-dark: var(--color-secondary-900);
+  --color-brand: var(--color-primary-800);
+  --color-brand-hover: var(--color-primary-700);
+  --color-brand-dark: var(--color-primary-900);
 
-  /* Text */
-  --color-text: var(--color-neutral);
-  --color-text-dark: var(--color-neutral-dark);
-  --color-text-heading: var(--color-neutral-heading);
+  --color-accent: var(--color-accent-500);
+  --color-accent-hover: var(--color-accent-600);
+  --color-accent-tint: var(--color-accent-400);
+
+  --color-text: var(--color-ink);
+  --color-text-dark: var(--color-primary-900);
+  --color-text-heading: var(--color-primary-900);
   --color-text-inverse: var(--color-white);
+  --color-text-on-dark: var(--color-white-80);
+  --color-link-on-dark: var(--color-accent-400);
 
-  /* Backgrounds */
-  --color-bg: var(--color-secondary-50);
-  --color-bg-teal: var(--color-secondary-100); /* rename to suit brand */
+  --color-bg: var(--color-paper);
+  --color-bg-tint-1: var(--color-primary-300);
+  --color-bg-tint-2: var(--color-primary-400);
+  --color-bg-hero: var(--color-primary-500);
   --color-bg-subtle: var(--color-grey-1);
-  --color-bg-grey-d: var(--color-grey-3);
-  --color-bg-grey-c: var(--color-grey-4);
 
-  /* Borders */
-  --color-border: var(--color-brand-600);
+  --color-border: var(--color-primary-800);
   --color-border-subtle: var(--color-grey-2);
 
-  /* Text selection */
   --color-selection-bg: var(--color-brand);
   --color-selection-text: var(--color-white);
 
-  /* Button — primary */
-  --btn-primary-bg: var(--color-brand);
-  --btn-primary-bg-hover: var(--color-brand-hover);
-  --btn-primary-border: var(--color-brand);
+  --btn-primary-bg: var(--color-accent);
+  --btn-primary-bg-hover: var(--color-accent-hover);
+  --btn-primary-border: var(--color-accent);
   --btn-primary-border-hover: var(--color-white);
   --btn-primary-text: var(--color-white);
   --btn-primary-text-hover: var(--color-white);
 
-  /* Button — secondary (outline) */
   --btn-secondary-bg: transparent;
   --btn-secondary-bg-hover: var(--color-brand);
   --btn-secondary-border: var(--color-brand);
@@ -102,78 +114,113 @@
 
 /* ---------------------------------------------------------------------------
    TYPOGRAPHY — Font family and weights
-   Add a Google Fonts <link> in src/layouts/Layout.astro if needed.
    --------------------------------------------------------------------------- */
 
 :root {
   --font-family-primary: "Font Name", sans-serif; /* replace with client font */
-  --font-family-heading: "Font Name", sans-serif; /* often the same font */
+  --font-family-heading: "Font Name", sans-serif;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
-  /* Cap-size trim — update values to match the chosen font.
-     Find values at: https://seek-oss.github.io/capsize/ */
-  --font-trim-top: 0.34em; /* replace with font-specific value */
-  --font-trim-bottom: 0.41em; /* replace with font-specific value */
+  /* Cap-size trim — get real values for the chosen font at
+     seek-oss.github.io/capsize */
+  --font-trim-top: 0.34em;
+  --font-trim-bottom: 0.41em;
 }
 
 /* ---------------------------------------------------------------------------
-   TYPOGRAPHY — Line heights
+   TYPOGRAPHY — Line heights / letter spacing
    --------------------------------------------------------------------------- */
 
 :root {
   --leading-none: 1;
-  --leading-tight: 1.1; /* headings */
+  --leading-tight: 1.1;
   --leading-snug: 1.3;
-  --leading-normal: 1.5; /* body text */
-}
+  --leading-normal: 1.5;
 
-/* ---------------------------------------------------------------------------
-   TYPOGRAPHY — Letter spacing
-   --------------------------------------------------------------------------- */
-
-:root {
-  --tracking-tight: -0.03em; /* large headings */
+  --tracking-tight: -0.03em;
   --tracking-normal: 0em;
 }
 
 /* ---------------------------------------------------------------------------
    TYPOGRAPHY — Fluid type scale
-
-   Generate at: utopia.fyi/type/calculator
-   Recommended settings:
-     Min viewport:  320px    Max viewport: 1440px
-     Min font size: 16px     Max font size: 18px (adjust to suit)
-     Min scale:     1.2 (Minor Third)
-     Max scale:     1.25 (Major Third)
-     Steps:         -1 → 6 (7 → 8 for display if needed)
-
-   Replace all clamp() values below with Utopia output.
-   Use cqi units (container query inline) not vw — Utopia offers this option.
-
-   Step    Role           Min (320px)   Max (1440px)
-   --------------------------------------------------
-   --step--1  small text
-   --step-0   body / base
-   --step-1   large text
-   --step-2   h5
-   --step-3   h4
-   --step-4   h3
-   --step-5   h2
-   --step-6   h1
-   --step-7   display      (reserve — add if needed)
+   Lumos default sizes, 320px → 1440px clamp(). Raw tokens keep Lumos'
+   names; --step-N is the tag-free utility scale; --h*-size is the
+   per-project heading-tag decision (see below).
    --------------------------------------------------------------------------- */
 
 :root {
-  --step--1: clamp(/* paste Utopia value */);
-  --step-0: clamp(/* paste Utopia value */);
-  --step-1: clamp(/* paste Utopia value */);
-  --step-2: clamp(/* paste Utopia value */);
-  --step-3: clamp(/* paste Utopia value */);
-  --step-4: clamp(/* paste Utopia value */);
-  --step-5: clamp(/* paste Utopia value */);
-  --step-6: clamp(/* paste Utopia value */);
-  --step-7: clamp(/* paste Utopia value */); /* display — remove if unused */
+  --size-text-xs: 0.875rem; /* 14/14 */
+  --size-text-small: clamp(0.875rem, 0.839rem + 0.179cqi, 1rem); /* 16/14 */
+  --size-text-main: clamp(
+    1rem,
+    0.964rem + 0.179cqi,
+    1.125rem
+  ); /* 18/16 — body */
+  --size-text-large: clamp(1.125rem, 1.089rem + 0.179cqi, 1.25rem); /* 20/18 */
+  --size-h6: var(--size-text-main); /* 18/16 */
+  --size-h5: clamp(1.375rem, 1.339rem + 0.179cqi, 1.5rem); /* 24/22 */
+  --size-h4: clamp(1.75rem, 1.679rem + 0.357cqi, 2rem); /* 32/28 */
+  --size-h3: clamp(2.25rem, 2.036rem + 1.071cqi, 3rem); /* 48/36 */
+  --size-h2: clamp(2.5rem, 2.071rem + 2.143cqi, 4rem); /* 64/40 */
+  --size-h1: clamp(3rem, 2.429rem + 2.857cqi, 5rem); /* 80/48 */
+  --size-display: clamp(4rem, 3.143rem + 4.286cqi, 7rem); /* 112/64 */
+}
+
+:root {
+  --step--2: var(--size-text-xs);
+  --step--1: var(--size-text-small);
+  --step-0: var(--size-text-main);
+  --step-1: var(--size-text-large);
+  --step-2: var(--size-h5);
+  --step-3: var(--size-h4);
+  --step-4: var(--size-h3);
+  --step-5: var(--size-h2);
+  --step-6: var(--size-h1);
+  --step-7: var(--size-display);
+}
+
+/* Per-project heading sizes — reconsider these each new project.
+   Defaults to the full Lumos scale (h1 = true h1 size, 80/48). Jude
+   Lawson Therapy shifted this down one step across the board (h1 uses
+   Lumos h2, etc.) because 80/48 read too big for that site — not
+   assumed here, decide fresh per project.
+   h1–h4 only by default; h5/h6 are edge cases, size ad hoc with a
+   .u-text-hN utility rather than adding them back as framework defaults. */
+
+:root {
+  --h1-size: var(--step-6);
+  --h2-size: var(--step-5);
+  --h3-size: var(--step-4);
+  --h4-size: var(--step-3);
+}
+
+/* ---------------------------------------------------------------------------
+   SPACING — Fluid space scale
+   Same source/method as type scale. Most-used: 1, 2, 4, 7, 8.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --space-0: 0;
+  --space-1: clamp(0.25rem, 0.179rem + 0.357cqi, 0.5rem); /* 8/4 */
+  --space-2: clamp(0.5rem, 0.429rem + 0.357cqi, 0.75rem); /* 12/8 */
+  --space-3: clamp(0.75rem, 0.679rem + 0.357cqi, 1rem); /* 16/12 */
+  --space-4: clamp(1rem, 0.857rem + 0.714cqi, 1.5rem); /* 24/16 */
+  --space-5: clamp(1.5rem, 1.357rem + 0.714cqi, 2rem); /* 32/24 */
+  --space-6: clamp(1.75rem, 1.536rem + 1.071cqi, 2.5rem); /* 40/28 */
+  --space-7: clamp(2.25rem, 2.036rem + 1.071cqi, 3rem); /* 48/36 */
+  --space-8: clamp(2.5rem, 2.071rem + 2.143cqi, 4rem); /* 64/40 */
+
+  --space-section-none: 0;
+  --space-section-small: clamp(3rem, 2.429rem + 2.857cqi, 5rem); /* 80/48 */
+  --space-section-main: clamp(4rem, 3.143rem + 4.286cqi, 7rem); /* 112/64 */
+  --space-section-large: clamp(5.5rem, 4.214rem + 6.429cqi, 10rem); /* 160/88 */
+  --space-section-page-top: clamp(7rem, 5rem + 10cqi, 14rem); /* 224/112 */
+
+  /* Margin/gutter — dedicated Lumos tokens, not part of the numbered
+     ramp above (mobile values don't follow the same pattern). */
+  --space-margin: clamp(1rem, 0.429rem + 2.857cqi, 3rem); /* 48/16 */
+  --space-gutter: 1rem; /* 16/16 — flat, not fluid */
 }
