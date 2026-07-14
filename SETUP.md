@@ -30,6 +30,7 @@ Or via [sanity.io/manage](https://sanity.io/manage) if you prefer the UI.
 Note the **project ID** it gives you.
 
 Update `studio/sanity.config.ts`:
+
 ```ts
 title: 'Client Name',
 projectId: '<your-new-project-id>',
@@ -44,6 +45,7 @@ cp .env.example .env
 ```
 
 Fill in:
+
 - `PUBLIC_SANITY_PROJECT_ID` — same ID as step 2
 - `PUBLIC_SANITY_DATASET` — `production`, unless you set up something else
 - `SANITY_API_READ_TOKEN` — see step 4
@@ -55,16 +57,20 @@ points you back to `.env`.
 ## 4. Generate a read token
 
 From `studio/`:
+
 ```bash
 sanity debug --secrets
 ```
+
 This gives you a management token. Use it to script a read-role API token:
+
 ```bash
 curl -X POST https://api.sanity.io/v1/projects/<projectId>/tokens \
   -H "Authorization: Bearer <token from sanity debug --secrets>" \
   -H "Content-Type: application/json" \
   -d '{"label":"frontend-read","role":"read"}'
 ```
+
 Or manually: sanity.io/manage → project → API → Tokens → Add API token →
 Viewer. Paste the result into `SANITY_API_READ_TOKEN` in `frontend/.env`.
 
@@ -90,6 +96,7 @@ duplicating.
 ## 6. Set CORS origins
 
 sanity.io/manage → project → API → CORS Origins → Add:
+
 - `http://localhost:4321` (or whatever port Astro actually binds to, see
   the port note below), allow credentials, save.
 
@@ -109,6 +116,12 @@ that port's already taken, including by an unrelated project's dev server
 running elsewhere. If Presentation mode 404s or looks dead, this port
 mismatch is the most likely cause, `lsof -nP -iTCP:4321 -sTCP:LISTEN`
 tells you what's actually holding the port.
+
+## Hard rules
+
+Not gotchas to remember case by case — do these every time, no exceptions.
+
+- **Always pass the generic type argument to `loadQuery`.** `loadQuery({ query, ... })` with no generic infers `data` as `{}`, and every property access on it silently fails type-checking. Correct: `loadQuery<SomeQueryResult>({ query, ... })`, with `SomeQueryResult` describing exactly the fields actually read from that query, expand it as more fields get consumed, don't let it drift stale. Bitten twice across two projects now, treat this as non-negotiable rather than something to catch on review.
 
 ---
 
