@@ -3,6 +3,12 @@ import SanityVisualEditing from "../components/SanityVisualEditing";
 import DisableDraftMode from "../components/DisableDraftMode";
 import { perspectiveCookieName } from "@sanity/preview-url-secret/constants";
 
+interface Props {
+  title?: string;
+}
+
+const { title = "Enter title here" } = Astro.props;
+
 const draftMode = Astro.cookies.has(perspectiveCookieName);
 ---
 
@@ -11,7 +17,7 @@ const draftMode = Astro.cookies.has(perspectiveCookieName);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>Youth Wellbeing</title>
+    <title>{title}</title>
 
     <style>
       body {
