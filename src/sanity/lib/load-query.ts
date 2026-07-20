@@ -1,6 +1,9 @@
 import type { ClientPerspective, QueryParams } from "@sanity/client";
 import { sanityClient } from "sanity:client";
 
+// stega is only enabled when draftMode is true (see below) — enum/select fields consumed
+// for logic, not display, still need stegaClean() at the destructuring point. See SETUP.md.
+
 const token = import.meta.env.SANITY_API_READ_TOKEN;
 
 function parsePerspective(

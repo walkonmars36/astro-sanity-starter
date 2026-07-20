@@ -123,6 +123,54 @@ Not gotchas to remember case by case — do these every time, no exceptions.
 
 - **Always pass the generic type argument to `loadQuery`.** `loadQuery({ query, ... })` with no generic infers `data` as `{}`, and every property access on it silently fails type-checking. Correct: `loadQuery<SomeQueryResult>({ query, ... })`, with `SomeQueryResult` describing exactly the fields actually read from that query, expand it as more fields get consumed, don't let it drift stale. Bitten twice across two projects now, treat this as non-negotiable rather than something to catch on review.
 
+## Sanity stega encoding vs. enum/select fields
+
+**The pattern:** Sanity's Visual Editing (Presentation tool / draft mode) stega-encodes
+_every_ string value returned by a GROQ query, not just prose. It appends invisible
+Unicode (zero-width space, zero-width joiner, `﻿`) to the end of the string so the
+click-to-edit overlay can map rendered text back to its source field. This is enabled by
+`frontend/src/sanity/lib/load-query.ts` via `stega: draftMode` whenever the Sanity
+draft-mode/perspective cookie is present (i.e. any time content is viewed through the
+Presentation tool, or a signed preview link).
+
+This is invisible in a browser tab, a DevTools Elements panel screenshot, or a
+`<title>` — but it's real text. It breaks anything that does an **exact** string
+comparison or renders the value somewhere other than as visible prose:
+
+- CSS attribute selectors, e.g. `[data-panel="sage"]` no longer matches `"sage" + 300
+invisible chars`
+- `===`/`!==` conditionals driving class names or layout (`mediaSide === "right"`)
+- `<title>` / `<meta name="description">` — looks fine in the tab, but corrupts what a
+  search engine or link-unfurl scraper actually indexes
+
+**The rule:** any Sanity field that is an enum/select (`options.list` in the schema) or
+otherwise consumed for _logic_ rather than _display_ — CSS selector, class name, JS
+conditional, `<title>`/`<meta>` content — must be passed through `stegaClean()` (from
+`@sanity/client/stega`) at the point it's destructured from the query result, before it's
+used in any comparison or attribute. Prose fields meant to render as visible text
+(`heading`, `body`, `eyebrow`, portable text, etc.) should be left un-cleaned, so
+click-to-edit overlays keep working on them in Presentation mode.
+
+```ts
+const { panel: rawPanel = "none" } = Astro.props;
+const panel = stegaClean(rawPanel); // safe to use in [data-panel=...] or ===
+```
+
+This starter doesn't ship example page-builder sections with enum/select fields out of
+the box — apply the pattern the first time a component destructures a select/enum field
+from `loadQuery`'s result and uses it for logic (a CSS selector, a class name, a JS
+conditional, or `<title>`/`<meta>` content) rather than rendering it as prose.
+
+**Why this can't leak into production by default:** `load-query.ts` passes
+`stega: draftMode` on every fetch, where `draftMode` is derived from whether the signed,
+secret-validated draft-mode cookie is present (`@sanity/preview-url-secret`). The
+`@sanity/astro` integration's `stega: { studioUrl }` config in `astro.config.mjs` only
+supplies the Studio URL for the overlay deep-link — it does not itself turn stega on;
+`@sanity/client`'s default is `stega.enabled: false` unless a fetch call explicitly opts
+in. So a real site visitor without that cookie always gets clean strings regardless of
+what new fields get added later — the `stegaClean()` calls above exist for the
+draft-mode/Presentation-tool case, not as a production safety net.
+
 ---
 
 For less common gotchas (trailing whitespace in folder names, named vs.

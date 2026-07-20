@@ -223,4 +223,6 @@
      ramp above (mobile values don't follow the same pattern). */
   --space-margin: clamp(1rem, 0.429rem + 2.857cqi, 3rem); /* 48/16 */
   --space-gutter: 1rem; /* 16/16 — flat, not fluid */
+
+  --content-max: /* enter project content max width here, e.g. 1200px */;
 }
