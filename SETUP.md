@@ -161,6 +161,12 @@ the box — apply the pattern the first time a component destructures a select/e
 from `loadQuery`'s result and uses it for logic (a CSS selector, a class name, a JS
 conditional, or `<title>`/`<meta>` content) rather than rendering it as prose.
 
+`frontend/src/sanity/lib/load-query.ts` carries a short pointer comment back to this rule.
+`sanity-studio-starter`'s `schemaTypes/index.ts` should carry the matching pointer — this
+belongs in that starter template itself (so every new project inherits it on clone), not
+as a per-project setup step. Not yet done as of this writing; do it once, directly in
+`sanity-studio-starter`.
+
 **Why this can't leak into production by default:** `load-query.ts` passes
 `stega: draftMode` on every fetch, where `draftMode` is derived from whether the signed,
 secret-validated draft-mode cookie is present (`@sanity/preview-url-secret`). The
